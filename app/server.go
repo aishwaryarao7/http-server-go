@@ -34,7 +34,7 @@ func main() {
 
 	req := strings.Split(string(buffer), " ")
 
-	if (req[1] == "/") {
+	if req[1] == "/" {
 		_, err = conn.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
 		if err != nil {
 			fmt.Println("Error writing:", err.Error())
