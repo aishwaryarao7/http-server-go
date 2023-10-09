@@ -28,7 +28,7 @@ func getURLHeaders(url string) map[string]interface{} {
 	return headers
 }
 
-func getUserAgent() {
+func getUserAgent(conn net.Conn) {
 	headers := getURLHeaders("/user-agent")
 	fmt.Println(headers)
 	_, err := conn.Write([]byte("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n" + headers["user-agent"].(string) + "\r\n"))
@@ -59,7 +59,7 @@ func main() {
 	}
 	if strings.HasPrefix(string(buf), "/user-agent") {
 		// Respond with a 200 OK response and content type of text/plain
-		getUserAgent()
+		getUserAgent(conn)
 		return
 	}
 	lines := strings.Split(string(buf), "\r\n")
@@ -70,7 +70,7 @@ func main() {
 		_, err = conn.Write([]byte("HTTP/1.1 200 OK\r\n\r\n"))
 	case strings.HasPrefix(path, "/user-agent"):
 		{
-			getUserAgent()
+			getUserAgent(conn)
 		}
 	case strings.HasPrefix(path, "/echo"):
 		{
